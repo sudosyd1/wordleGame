@@ -59,6 +59,7 @@ function App() {
             <Grid guesses={guesses} maxAttempts={maxAttempts} />
             {!gameOver && <Input onGuess={handleGuess} />}
             {message && <p className="message">{message}</p>}
+            {/* only render this if the condition is true */}
             {gameOver && (
                 <button onClick={handleNewGame}>Play Again</button>
             )}
