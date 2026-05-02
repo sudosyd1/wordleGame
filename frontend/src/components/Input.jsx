@@ -1,35 +1,35 @@
-import Tile from "./Tile";
+import { useState } from "react";
 
-function Grid({ guesses, maxAttempts }) {
-    const rows = [];
+function Input({ onGuess }) {
+    //on guess prop is a function passed from App.jsx that will be called when the user submits a guess
+    const [text, setText] = useState("");
 
-    //loop through each row. If there's a guess for that row,
-    // render the letters with colors. If not, render empty tiles.
-    for (let i = 0; i < maxAttempts; i++) {
-        const guess = guesses[i]; // might be undefined if not guessed yet
-        const tiles = [];
-        for (let j = 0; j < 5; j++) {
-            if (guess) {
-                // this row has a guess — show letter + color
-                tiles.push(
-                    <Tile
-                        key={j}
-                        letter={guess[j].letter}
-                        status={guess[j].status}
-                    />
-                );
-            } else {
-                // empty row — show blank tile
-                tiles.push(<Tile key={j} letter="" status="" />);
-            }
+    const handleSubmit = () => {
+        //resets guess and calls onguess (sends to App.jsx)
+        if (text.length === 5) {
+            onGuess(text.toLowerCase());
+            setText("");
         }
-        rows.push(
-            <div key={i} className="row">
-                {tiles}
-            </div>
-        );
-    }
-    return <div className="grid">{rows}</div>;
+    };
+    //handles pressing keys
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleSubmit();
+        }
+    };
+
+    return (
+        <div className="input-area">
+            <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={handleKeyDown}
+                maxLength={5}
+                placeholder="Enter 5-letter word"
+            />
+            <button onClick={handleSubmit}>Guess</button>
+        </div>
+    );
 }
 
-export default Grid;
+export default Input;
