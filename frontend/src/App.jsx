@@ -12,6 +12,7 @@ function App() {
     const maxAttempts = 5;
 
     const handleGuess = async (guess) => {
+        // 1. Send guess to Flask
         const response = await fetch(`${API_URL}/api/guess`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -19,24 +20,25 @@ function App() {
         });
         const data = await response.json();
 
+        // 2. If Flask returned an error, show it
         if (data.error) {
             setMessage(data.error);
             return;
         }
 
+        // 3. Add this guess to our list
         const newGuesses = [...guesses, data];
         setGuesses(newGuesses);
 
-        // Check win — all 5 letters green
+        // 4. Check if they won
         if (data.every((tile) => tile.status === "green")) {
             setMessage("You won!");
             setGameOver(true);
             return;
         }
 
-        // Check lose — used all attempts
+        // 5. Check if they lost
         if (newGuesses.length >= maxAttempts) {
-            // Fetch the answer to show them
             const answerRes = await fetch(`${API_URL}/api/answer`);
             const answerData = await answerRes.json();
             setMessage(`Game over! The word was ${answerData.answer}`);
@@ -57,7 +59,9 @@ function App() {
             <Grid guesses={guesses} maxAttempts={maxAttempts} />
             {!gameOver && <Input onGuess={handleGuess} />}
             {message && <p className="message">{message}</p>}
-            {gameOver && <button onClick={handleNewGame}>Play Again</button>}
+            {gameOver && (
+                <button onClick={handleNewGame}>Play Again</button>
+            )}
         </div>
     );
 }
