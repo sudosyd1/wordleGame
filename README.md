@@ -3,6 +3,10 @@
 A fullstack Wordle-inspired word guessing game built for the **GoLinks 2026 Fullstack Engineering Intern** hiring project.
 
 ## How to Play
+click the link to play: 
+https://wordle-game-nine-fawn.vercel.app?_vercel_share=fYMPJ6aRmsV3nP3l2Cl0oKEBW6vxAat5
+
+(hosted on render and vercel) 
 
 1. Guess the secret 5-letter word within 5 tries.
 2. After each guess, colored tiles reveal how close you are:
